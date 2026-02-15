@@ -14,6 +14,7 @@ final class CameraViewModel {
     var scannedElements: [ScannedTextElement] = []
     var translatedOverlays: [TranslatedOverlay] = []
     var isFrozen = false
+    var isTranslating = false
     var selectedLang: LanguageCode = .auto
     var isSaving = false
 
@@ -61,6 +62,8 @@ final class CameraViewModel {
 
     private func translateElements(_ elements: [ScannedTextElement]) async {
         guard let translatorService else { return }
+        isTranslating = true
+        defer { isTranslating = false }
 
         var overlays: [TranslatedOverlay] = []
         for element in elements {

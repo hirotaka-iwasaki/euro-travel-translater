@@ -55,6 +55,24 @@ struct VoiceView: View {
             let service = AppleTranslatorService(bridgeController: bridgeController)
             viewModel.setup(translatorService: service, modelContext: modelContext)
         }
+        .overlay(alignment: .bottom) {
+            if viewModel.copiedToast {
+                Text("Copied!")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(.ultraThinMaterial, in: Capsule())
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .padding(.bottom, 20)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                            withAnimation { viewModel.copiedToast = false }
+                        }
+                    }
+            }
+        }
+        .animation(.easeInOut(duration: 0.3), value: viewModel.copiedToast)
         .alert("Error", isPresented: .init(
             get: { viewModel.errorMessage != nil },
             set: { if !$0 { viewModel.errorMessage = nil } }
@@ -93,9 +111,14 @@ struct VoiceView: View {
 
     private var recordingButton: some View {
         Button {
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             viewModel.toggleListening()
         } label: {
             HStack(spacing: 8) {
+                if viewModel.isTranslating {
+                    ProgressView()
+                        .tint(.white)
+                }
                 Image(systemName: viewModel.isListening ? "stop.circle.fill" : "mic.circle.fill")
                     .font(.title2)
                 Text(viewModel.isListening ? "Stop" : "Start Listening")

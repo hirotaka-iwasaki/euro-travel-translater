@@ -5,6 +5,7 @@ import SwiftData
 @MainActor
 final class VoiceViewModel {
     var isListening = false
+    var isTranslating = false
     var partialText = ""
     var selectedLang: LanguageCode = .auto
     var transcripts: [TranscriptEntry] = []
@@ -95,6 +96,8 @@ final class VoiceViewModel {
 
     private func translateText(_ text: String, sourceLang: LanguageCode) async {
         guard let translatorService else { return }
+        isTranslating = true
+        defer { isTranslating = false }
         do {
             let translated = try await translatorService.translate(
                 text: text,

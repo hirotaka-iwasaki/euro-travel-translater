@@ -67,9 +67,23 @@ struct CameraView: View {
 
     private var toolbar: some View {
         VStack {
+            if viewModel.isTranslating {
+                HStack(spacing: 6) {
+                    ProgressView()
+                        .tint(.white)
+                    Text("Translating...")
+                        .font(.caption)
+                        .foregroundStyle(.white)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(.ultraThinMaterial, in: Capsule())
+                .padding(.top, 8)
+            }
             Spacer()
             HStack(spacing: 20) {
                 Button {
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                     viewModel.toggleFreeze()
                 } label: {
                     Label(
@@ -84,6 +98,7 @@ struct CameraView: View {
                 }
 
                 Button {
+                    UINotificationFeedbackGenerator().notificationOccurred(.success)
                     viewModel.save()
                 } label: {
                     Label("Save", systemImage: "square.and.arrow.down")

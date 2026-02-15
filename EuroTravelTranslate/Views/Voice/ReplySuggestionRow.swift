@@ -25,6 +25,7 @@ struct ReplySuggestionRow: View {
         .contentShape(Rectangle())
         .onTapGesture {
             UIPasteboard.general.string = suggestion.localText
+            UIImpactFeedbackGenerator(style: .light).impactOccurred()
             onCopy()
         }
         .onLongPressGesture {
