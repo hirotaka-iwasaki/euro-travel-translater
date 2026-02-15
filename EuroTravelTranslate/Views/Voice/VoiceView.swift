@@ -20,6 +20,7 @@ struct VoiceView: View {
                     LazyVStack(alignment: .leading, spacing: 12) {
                         transcriptSection
                         translationSection
+                        replySection
                     }
                     .padding()
                 }
@@ -145,6 +146,34 @@ struct VoiceView: View {
                         sourceText: entry.sourceText,
                         translatedText: entry.translatedText
                     )
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var replySection: some View {
+        if !viewModel.replySuggestions.isEmpty {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Text("Reply Suggestions")
+                        .font(.headline)
+                        .foregroundStyle(.secondary)
+
+                    Spacer()
+
+                    Picker("Style", selection: $viewModel.politeStyle) {
+                        Text("Polite").tag(true)
+                        Text("Casual").tag(false)
+                    }
+                    .pickerStyle(.segmented)
+                    .frame(width: 160)
+                }
+
+                ForEach(viewModel.replySuggestions) { suggestion in
+                    ReplySuggestionRow(suggestion: suggestion) {
+                        viewModel.copiedToast = true
+                    }
                 }
             }
         }

@@ -1,0 +1,439 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "PRICE",
+      "label_ja": "値段を聞く",
+      "phrases": [
+        {
+          "style": "polite",
+          "ja_hint": "いくらですか？",
+          "en": "How much is it, please?",
+          "fr": "C'est combien, s'il vous plaît ?",
+          "de": "Wie viel kostet das, bitte?",
+          "es": "¿Cuánto cuesta, por favor?",
+          "it": "Quanto costa, per favore?"
+        },
+        {
+          "style": "casual",
+          "ja_hint": "いくら？",
+          "en": "How much?",
+          "fr": "C'est combien ?",
+          "de": "Wie viel?",
+          "es": "¿Cuánto es?",
+          "it": "Quanto costa?"
+        }
+      ],
+      "keywords": {
+        "en": ["how much", "price", "cost", "expensive", "cheap"],
+        "fr": ["combien", "prix", "coûte", "cher"],
+        "de": ["wie viel", "kostet", "preis", "teuer", "billig"],
+        "es": ["cuánto", "precio", "cuesta", "caro", "barato"],
+        "it": ["quanto", "prezzo", "costa", "caro", "economico"]
+      }
+    },
+    {
+      "id": "WHERE",
+      "label_ja": "場所を聞く",
+      "phrases": [
+        {
+          "style": "polite",
+          "ja_hint": "〜はどこですか？",
+          "en": "Excuse me, where is...?",
+          "fr": "Excusez-moi, où se trouve... ?",
+          "de": "Entschuldigung, wo ist...?",
+          "es": "Disculpe, ¿dónde está...?",
+          "it": "Mi scusi, dov'è...?"
+        },
+        {
+          "style": "casual",
+          "ja_hint": "〜はどこ？",
+          "en": "Where is...?",
+          "fr": "Où est... ?",
+          "de": "Wo ist...?",
+          "es": "¿Dónde está...?",
+          "it": "Dov'è...?"
+        }
+      ],
+      "keywords": {
+        "en": ["where", "location", "find", "direction", "way"],
+        "fr": ["où", "direction", "trouver", "chemin"],
+        "de": ["wo", "richtung", "finden", "weg"],
+        "es": ["dónde", "dirección", "encontrar", "camino"],
+        "it": ["dove", "direzione", "trovare", "strada"]
+      }
+    },
+    {
+      "id": "THANKS",
+      "label_ja": "お礼を言う",
+      "phrases": [
+        {
+          "style": "polite",
+          "ja_hint": "ありがとうございます",
+          "en": "Thank you very much.",
+          "fr": "Merci beaucoup.",
+          "de": "Vielen Dank.",
+          "es": "Muchas gracias.",
+          "it": "Grazie mille."
+        },
+        {
+          "style": "casual",
+          "ja_hint": "ありがとう",
+          "en": "Thanks!",
+          "fr": "Merci !",
+          "de": "Danke!",
+          "es": "¡Gracias!",
+          "it": "Grazie!"
+        }
+      ],
+      "keywords": {
+        "en": ["thank", "thanks", "appreciate"],
+        "fr": ["merci", "remercie"],
+        "de": ["danke", "dank"],
+        "es": ["gracias", "agradecer"],
+        "it": ["grazie", "ringrazio"]
+      }
+    },
+    {
+      "id": "SORRY",
+      "label_ja": "謝る・すみません",
+      "phrases": [
+        {
+          "style": "polite",
+          "ja_hint": "申し訳ありません",
+          "en": "I'm very sorry.",
+          "fr": "Je suis vraiment désolé(e).",
+          "de": "Es tut mir sehr leid.",
+          "es": "Lo siento mucho.",
+          "it": "Mi dispiace molto."
+        },
+        {
+          "style": "casual",
+          "ja_hint": "ごめん",
+          "en": "Sorry!",
+          "fr": "Pardon !",
+          "de": "Entschuldigung!",
+          "es": "¡Perdón!",
+          "it": "Scusa!"
+        }
+      ],
+      "keywords": {
+        "en": ["sorry", "excuse", "apolog", "pardon"],
+        "fr": ["désolé", "pardon", "excusez"],
+        "de": ["entschuldigung", "leid", "verzeihung"],
+        "es": ["perdón", "disculpe", "lo siento"],
+        "it": ["scusa", "dispiace", "perdon"]
+      }
+    },
+    {
+      "id": "REPEAT",
+      "label_ja": "もう一度言ってください",
+      "phrases": [
+        {
+          "style": "polite",
+          "ja_hint": "もう一度おっしゃっていただけますか？",
+          "en": "Could you say that again, please?",
+          "fr": "Pourriez-vous répéter, s'il vous plaît ?",
+          "de": "Könnten Sie das bitte wiederholen?",
+          "es": "¿Podría repetir eso, por favor?",
+          "it": "Potrebbe ripetere, per favore?"
+        },
+        {
+          "style": "casual",
+          "ja_hint": "もう一回言って",
+          "en": "Say that again?",
+          "fr": "Tu peux répéter ?",
+          "de": "Nochmal bitte?",
+          "es": "¿Puedes repetir?",
+          "it": "Puoi ripetere?"
+        }
+      ],
+      "keywords": {
+        "en": ["repeat", "again", "say again", "what did you say"],
+        "fr": ["répéter", "encore", "redire"],
+        "de": ["wiederholen", "nochmal"],
+        "es": ["repetir", "otra vez"],
+        "it": ["ripetere", "ancora", "di nuovo"]
+      }
+    },
+    {
+      "id": "SLOW",
+      "label_ja": "ゆっくり話してください",
+      "phrases": [
+        {
+          "style": "polite",
+          "ja_hint": "もう少しゆっくりお願いします",
+          "en": "Could you speak more slowly, please?",
+          "fr": "Pourriez-vous parler plus lentement ?",
+          "de": "Könnten Sie bitte langsamer sprechen?",
+          "es": "¿Podría hablar más despacio, por favor?",
+          "it": "Potrebbe parlare più lentamente, per favore?"
+        },
+        {
+          "style": "casual",
+          "ja_hint": "ゆっくり話して",
+          "en": "Slower, please.",
+          "fr": "Plus lentement, s'il te plaît.",
+          "de": "Langsamer, bitte.",
+          "es": "Más despacio, por favor.",
+          "it": "Più lentamente, per favore."
+        }
+      ],
+      "keywords": {
+        "en": ["slow", "slowly", "fast", "quickly"],
+        "fr": ["lentement", "doucement", "vite", "rapide"],
+        "de": ["langsam", "langsamer", "schnell"],
+        "es": ["despacio", "lento", "rápido"],
+        "it": ["lentamente", "piano", "veloce"]
+      }
+    },
+    {
+      "id": "UNDERSTAND",
+      "label_ja": "分かりません",
+      "phrases": [
+        {
+          "style": "polite",
+          "ja_hint": "すみません、分かりません",
+          "en": "I'm sorry, I don't understand.",
+          "fr": "Je suis désolé(e), je ne comprends pas.",
+          "de": "Entschuldigung, ich verstehe nicht.",
+          "es": "Lo siento, no entiendo.",
+          "it": "Mi dispiace, non capisco."
+        },
+        {
+          "style": "casual",
+          "ja_hint": "分からない",
+          "en": "I don't understand.",
+          "fr": "Je ne comprends pas.",
+          "de": "Ich verstehe nicht.",
+          "es": "No entiendo.",
+          "it": "Non capisco."
+        }
+      ],
+      "keywords": {
+        "en": ["understand", "don't understand", "confused", "mean"],
+        "fr": ["comprends", "comprendre", "compris"],
+        "de": ["verstehe", "verstehen"],
+        "es": ["entiendo", "entender", "comprendo"],
+        "it": ["capisco", "capire", "capito"]
+      }
+    },
+    {
+      "id": "WHAT",
+      "label_ja": "これは何ですか？",
+      "phrases": [
+        {
+          "style": "polite",
+          "ja_hint": "これは何ですか？",
+          "en": "Excuse me, what is this?",
+          "fr": "Excusez-moi, qu'est-ce que c'est ?",
+          "de": "Entschuldigung, was ist das?",
+          "es": "Disculpe, ¿qué es esto?",
+          "it": "Mi scusi, che cos'è questo?"
+        },
+        {
+          "style": "casual",
+          "ja_hint": "これ何？",
+          "en": "What's this?",
+          "fr": "C'est quoi ?",
+          "de": "Was ist das?",
+          "es": "¿Qué es esto?",
+          "it": "Cos'è questo?"
+        }
+      ],
+      "keywords": {
+        "en": ["what", "what is", "this"],
+        "fr": ["quoi", "qu'est-ce", "ceci"],
+        "de": ["was", "ist das"],
+        "es": ["qué", "esto"],
+        "it": ["cosa", "cos'è", "questo"]
+      }
+    },
+    {
+      "id": "WANT_GO",
+      "label_ja": "〜へ行きたい",
+      "phrases": [
+        {
+          "style": "polite",
+          "ja_hint": "〜に行きたいのですが",
+          "en": "I'd like to go to..., please.",
+          "fr": "Je voudrais aller à..., s'il vous plaît.",
+          "de": "Ich möchte gerne zu... gehen.",
+          "es": "Me gustaría ir a..., por favor.",
+          "it": "Vorrei andare a..., per favore."
+        },
+        {
+          "style": "casual",
+          "ja_hint": "〜に行きたい",
+          "en": "I want to go to...",
+          "fr": "Je veux aller à...",
+          "de": "Ich will zu... gehen.",
+          "es": "Quiero ir a...",
+          "it": "Voglio andare a..."
+        }
+      ],
+      "keywords": {
+        "en": ["go to", "want to go", "get to", "take me"],
+        "fr": ["aller", "voudrais aller", "direction"],
+        "de": ["gehen", "fahren", "möchte"],
+        "es": ["ir", "quiero ir", "llevar"],
+        "it": ["andare", "voglio andare", "portare"]
+      }
+    },
+    {
+      "id": "PAYMENT",
+      "label_ja": "支払い",
+      "phrases": [
+        {
+          "style": "polite",
+          "ja_hint": "お会計をお願いします",
+          "en": "Could I have the bill, please?",
+          "fr": "L'addition, s'il vous plaît.",
+          "de": "Die Rechnung, bitte.",
+          "es": "La cuenta, por favor.",
+          "it": "Il conto, per favore."
+        },
+        {
+          "style": "casual",
+          "ja_hint": "カードで払える？",
+          "en": "Can I pay by card?",
+          "fr": "Je peux payer par carte ?",
+          "de": "Kann ich mit Karte zahlen?",
+          "es": "¿Puedo pagar con tarjeta?",
+          "it": "Posso pagare con carta?"
+        }
+      ],
+      "keywords": {
+        "en": ["pay", "bill", "check", "card", "cash", "payment"],
+        "fr": ["payer", "addition", "carte", "espèces"],
+        "de": ["zahlen", "rechnung", "karte", "bargeld"],
+        "es": ["pagar", "cuenta", "tarjeta", "efectivo"],
+        "it": ["pagare", "conto", "carta", "contanti"]
+      }
+    },
+    {
+      "id": "ALLERGY",
+      "label_ja": "アレルギー",
+      "phrases": [
+        {
+          "style": "polite",
+          "ja_hint": "〜アレルギーがあります",
+          "en": "I have an allergy to... Could you help me?",
+          "fr": "J'ai une allergie à... Pourriez-vous m'aider ?",
+          "de": "Ich habe eine Allergie gegen... Können Sie mir helfen?",
+          "es": "Tengo alergia a... ¿Podría ayudarme?",
+          "it": "Ho un'allergia a... Potrebbe aiutarmi?"
+        },
+        {
+          "style": "casual",
+          "ja_hint": "〜食べられない",
+          "en": "I can't eat...",
+          "fr": "Je ne peux pas manger...",
+          "de": "Ich kann kein... essen.",
+          "es": "No puedo comer...",
+          "it": "Non posso mangiare..."
+        }
+      ],
+      "keywords": {
+        "en": ["allergy", "allergic", "can't eat", "intolerant", "gluten", "nuts", "dairy"],
+        "fr": ["allergie", "allergique", "manger", "intolérant"],
+        "de": ["allergie", "allergisch", "essen", "unverträglich"],
+        "es": ["alergia", "alérgico", "comer", "intolerante"],
+        "it": ["allergia", "allergico", "mangiare", "intollerante"]
+      }
+    },
+    {
+      "id": "AVAILABLE",
+      "label_ja": "〜はありますか？",
+      "phrases": [
+        {
+          "style": "polite",
+          "ja_hint": "〜はございますか？",
+          "en": "Do you have...?",
+          "fr": "Avez-vous... ?",
+          "de": "Haben Sie...?",
+          "es": "¿Tiene usted...?",
+          "it": "Avete...?"
+        },
+        {
+          "style": "casual",
+          "ja_hint": "〜ある？",
+          "en": "Got any...?",
+          "fr": "T'as... ?",
+          "de": "Hast du...?",
+          "es": "¿Tienes...?",
+          "it": "Hai...?"
+        }
+      ],
+      "keywords": {
+        "en": ["have", "available", "any", "do you have"],
+        "fr": ["avez", "disponible", "avoir"],
+        "de": ["haben", "verfügbar", "gibt es"],
+        "es": ["tiene", "disponible", "hay"],
+        "it": ["avete", "disponibile", "c'è"]
+      }
+    },
+    {
+      "id": "HELP",
+      "label_ja": "助けを求める",
+      "phrases": [
+        {
+          "style": "polite",
+          "ja_hint": "助けていただけますか？",
+          "en": "Could you help me, please?",
+          "fr": "Pourriez-vous m'aider, s'il vous plaît ?",
+          "de": "Könnten Sie mir bitte helfen?",
+          "es": "¿Podría ayudarme, por favor?",
+          "it": "Potrebbe aiutarmi, per favore?"
+        },
+        {
+          "style": "casual",
+          "ja_hint": "手伝って",
+          "en": "Can you help?",
+          "fr": "Tu peux m'aider ?",
+          "de": "Kannst du helfen?",
+          "es": "¿Me ayudas?",
+          "it": "Mi aiuti?"
+        }
+      ],
+      "keywords": {
+        "en": ["help", "assist", "need help"],
+        "fr": ["aider", "aide", "besoin"],
+        "de": ["helfen", "hilfe", "brauche"],
+        "es": ["ayudar", "ayuda", "necesito"],
+        "it": ["aiutare", "aiuto", "bisogno"]
+      }
+    },
+    {
+      "id": "ORDER",
+      "label_ja": "注文する",
+      "phrases": [
+        {
+          "style": "polite",
+          "ja_hint": "これをお願いします",
+          "en": "I'd like this one, please.",
+          "fr": "Je voudrais ceci, s'il vous plaît.",
+          "de": "Ich hätte gerne das hier, bitte.",
+          "es": "Me gustaría este, por favor.",
+          "it": "Vorrei questo, per favore."
+        },
+        {
+          "style": "casual",
+          "ja_hint": "これください",
+          "en": "This one, please.",
+          "fr": "Celui-ci, s'il vous plaît.",
+          "de": "Das hier, bitte.",
+          "es": "Este, por favor.",
+          "it": "Questo, per favore."
+        }
+      ],
+      "keywords": {
+        "en": ["order", "like", "want", "have", "menu", "recommend"],
+        "fr": ["commander", "voudrais", "menu", "recommander"],
+        "de": ["bestellen", "möchte", "speisekarte", "empfehlen"],
+        "es": ["pedir", "quiero", "menú", "recomendar"],
+        "it": ["ordinare", "vorrei", "menu", "consigliare"]
+      }
+    }
+  ]
+}

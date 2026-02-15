@@ -9,10 +9,14 @@ final class VoiceViewModel {
     var selectedLang: LanguageCode = .auto
     var transcripts: [TranscriptEntry] = []
     var translations: [TranslationEntry] = []
+    var replySuggestions: [ReplySuggestion] = []
+    var politeStyle: Bool = true
+    var copiedToast = false
     var errorMessage: String?
 
     private let transcriber = AppleSpeechTranscriber()
     private let segmenter = Segmenter()
+    private let replyEngine = PhrasebookReplyEngine()
     private var translatorService: AppleTranslatorService?
     private var listeningTask: Task<Void, Never>?
     private var modelContext: ModelContext?
@@ -103,6 +107,7 @@ final class VoiceViewModel {
             )
             translations.append(entry)
             saveTranslation(text: text, translated: translated, sourceLang: sourceLang)
+            updateReplySuggestions(sourceText: text, translatedText: translated, sourceLang: sourceLang)
         } catch {
             AppLogger.translation.error("Translation failed: \(error.localizedDescription)")
         }
@@ -137,9 +142,20 @@ final class VoiceViewModel {
         return selectedLang.locale
     }
 
+    private func updateReplySuggestions(sourceText: String, translatedText: String, sourceLang: LanguageCode) {
+        let style: ReplyStyle = politeStyle ? .polite : .casual
+        replySuggestions = replyEngine.suggest(
+            sourceText: sourceText,
+            translatedText: translatedText,
+            sourceLang: sourceLang,
+            style: style
+        )
+    }
+
     func clearSession() {
         transcripts.removeAll()
         translations.removeAll()
+        replySuggestions.removeAll()
         partialText = ""
         segmenter.reset()
     }
