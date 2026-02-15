@@ -7,5 +7,11 @@ struct EuroTravelTranslateApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: [
+            TranscriptItem.self,
+            TranslationItem.self,
+            CameraCaptureItem.self,
+            SettingsState.self,
+        ])
     }
 }
