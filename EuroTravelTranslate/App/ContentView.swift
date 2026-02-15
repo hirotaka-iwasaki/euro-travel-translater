@@ -14,8 +14,7 @@ struct ContentView: View {
 
                 Tab("Camera", systemImage: "camera.fill") {
                     NavigationStack {
-                        Text("Camera")
-                            .navigationTitle("Camera")
+                        CameraView()
                     }
                 }
 
