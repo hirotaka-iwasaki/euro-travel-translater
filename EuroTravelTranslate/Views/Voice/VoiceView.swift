@@ -171,9 +171,11 @@ struct VoiceView: View {
                 }
 
                 ForEach(viewModel.replySuggestions) { suggestion in
-                    ReplySuggestionRow(suggestion: suggestion) {
-                        viewModel.copiedToast = true
-                    }
+                    ReplySuggestionRow(
+                        suggestion: suggestion,
+                        onCopy: { viewModel.copiedToast = true },
+                        onSpeak: { viewModel.speakSuggestion(suggestion) }
+                    )
                 }
             }
         }

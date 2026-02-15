@@ -17,6 +17,7 @@ final class VoiceViewModel {
     private let transcriber = AppleSpeechTranscriber()
     private let segmenter = Segmenter()
     private let replyEngine = PhrasebookReplyEngine()
+    let ttsService = TTSService()
     private var translatorService: AppleTranslatorService?
     private var listeningTask: Task<Void, Never>?
     private var modelContext: ModelContext?
@@ -150,6 +151,11 @@ final class VoiceViewModel {
             sourceLang: sourceLang,
             style: style
         )
+    }
+
+    func speakSuggestion(_ suggestion: ReplySuggestion) {
+        let lang = selectedLang == .auto ? LanguageCode.en : selectedLang
+        ttsService.speak(text: suggestion.localText, lang: lang)
     }
 
     func clearSession() {
