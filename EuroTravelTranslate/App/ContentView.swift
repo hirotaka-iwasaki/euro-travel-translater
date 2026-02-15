@@ -26,8 +26,7 @@ struct ContentView: View {
 
                 Tab("Settings", systemImage: "gearshape.fill") {
                     NavigationStack {
-                        Text("Settings")
-                            .navigationTitle("Settings")
+                        SettingsView()
                     }
                 }
             }
