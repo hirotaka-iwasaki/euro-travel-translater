@@ -8,8 +8,7 @@ struct ContentView: View {
             TabView {
                 Tab("Voice", systemImage: "mic.fill") {
                     NavigationStack {
-                        Text("Voice")
-                            .navigationTitle("Voice")
+                        VoiceView()
                     }
                 }
 
