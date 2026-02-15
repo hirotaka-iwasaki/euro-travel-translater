@@ -3,17 +3,24 @@ import Foundation
 final class PhrasebookReplyEngine: ReplyEngine, Sendable {
     private let phrasebook: Phrasebook
 
-    init() {
-        guard let url = Bundle.main.url(forResource: "phrasebook", withExtension: "json"),
-              let data = try? Data(contentsOf: url),
-              let book = try? JSONDecoder().decode(Phrasebook.self, from: data)
-        else {
+    init(bundle: Bundle = .main) {
+        let searchBundles = [bundle, .main]
+        var loadedBook: Phrasebook?
+        for b in searchBundles {
+            if let url = b.url(forResource: "phrasebook", withExtension: "json"),
+               let data = try? Data(contentsOf: url),
+               let book = try? JSONDecoder().decode(Phrasebook.self, from: data) {
+                loadedBook = book
+                break
+            }
+        }
+        if let book = loadedBook {
+            phrasebook = book
+            AppLogger.general.info("Loaded phrasebook with \(book.categories.count) categories")
+        } else {
             AppLogger.general.error("Failed to load phrasebook.json")
             phrasebook = Phrasebook(version: 1, categories: [])
-            return
         }
-        phrasebook = book
-        AppLogger.general.info("Loaded phrasebook with \(book.categories.count) categories")
     }
 
     func suggest(

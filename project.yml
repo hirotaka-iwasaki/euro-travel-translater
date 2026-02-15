@@ -16,8 +16,9 @@ targets:
     platform: iOS
     sources:
       - path: EuroTravelTranslate
-    resources:
       - path: Resources
+        type: group
+        buildPhase: resources
     settings:
       base:
         INFOPLIST_KEY_NSCameraUsageDescription: "カメラで看板やメニューの文字を読み取り、翻訳します"
@@ -41,3 +42,5 @@ targets:
     settings:
       base:
         GENERATE_INFOPLIST_FILE: true
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/EuroTravelTranslate.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EuroTravelTranslate"
+        BUNDLE_LOADER: "$(TEST_HOST)"
