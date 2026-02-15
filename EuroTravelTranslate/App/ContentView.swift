@@ -20,8 +20,7 @@ struct ContentView: View {
 
                 Tab("Phrases", systemImage: "text.book.closed.fill") {
                     NavigationStack {
-                        Text("Phrases")
-                            .navigationTitle("Phrases")
+                        PhrasesView()
                     }
                 }
 
