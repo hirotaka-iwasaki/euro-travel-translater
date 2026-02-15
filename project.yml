@@ -1,0 +1,43 @@
+name: EuroTravelTranslate
+options:
+  bundleIdPrefix: com.minasehiro
+  deploymentTarget:
+    iOS: "18.0"
+  xcodeVersion: "16.0"
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    IPHONEOS_DEPLOYMENT_TARGET: "18.0"
+
+targets:
+  EuroTravelTranslate:
+    type: application
+    platform: iOS
+    sources:
+      - path: EuroTravelTranslate
+    resources:
+      - path: Resources
+    settings:
+      base:
+        INFOPLIST_KEY_NSCameraUsageDescription: "カメラで看板やメニューの文字を読み取り、翻訳します"
+        INFOPLIST_KEY_NSMicrophoneUsageDescription: "音声を聞き取り、リアルタイムで翻訳します"
+        INFOPLIST_KEY_NSSpeechRecognitionUsageDescription: "音声をテキストに変換して翻訳します"
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: true
+        INFOPLIST_KEY_UILaunchScreen_Generation: true
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: "UIInterfaceOrientationPortrait"
+        GENERATE_INFOPLIST_FILE: true
+        PRODUCT_BUNDLE_IDENTIFIER: com.minasehiro.EuroTravelTranslate
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: 1
+
+  EuroTravelTranslateTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: EuroTravelTranslateTests
+    dependencies:
+      - target: EuroTravelTranslate
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: true
