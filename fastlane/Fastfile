@@ -21,19 +21,23 @@ platform :ios do
     Time.now.strftime("%Y%m%d%H%M")
   end
 
-  def ios_simulator_device
-    # Parse actual booted/available device names from simctl (iOS 26+ only)
-    require "json"
-    raw = sh("xcrun simctl list devices available -j", log: false)
-    json = JSON.parse(raw)
-    device_names = []
-    json["devices"].each do |runtime, devices|
-      next unless runtime =~ /iOS-?26/ || runtime =~ /SimRuntime\.iOS\.26/
-      devices.each { |d| device_names << d["name"] if d["isAvailable"] }
-    end
-
+  def ios_simulator_destination
+    # Find an actual available iPhone UUID from xcodebuild destinations
+    output = sh("xcodebuild -scheme EuroTravelTranslate -project EuroTravelTranslate.xcodeproj -showdestinations 2>&1", log: false)
+    # Match iPhone simulator lines: { platform:iOS Simulator, ..., id:UUID, ..., name:iPhone ... }
     preferred = ["iPhone 17 Pro", "iPhone 17", "iPhone 16 Pro", "iPhone 16"]
-    preferred.find { |d| device_names.include?(d) } || device_names.find { |n| n.start_with?("iPhone") } || "iPhone 16"
+    preferred.each do |name|
+      if output =~ /platform:iOS Simulator.*id:([A-F0-9-]+).*name:#{Regexp.escape(name)}/
+        UI.message("Using simulator: #{name} (#{$1})")
+        return "platform=iOS Simulator,id=#{$1}"
+      end
+    end
+    # Fallback: first iPhone simulator found
+    if output =~ /platform:iOS Simulator.*id:([A-F0-9-]+).*name:(iPhone[^}]+)/
+      UI.message("Fallback simulator: #{$2.strip} (#{$1})")
+      return "platform=iOS Simulator,id=#{$1}"
+    end
+    "platform=iOS Simulator,name=iPhone 16"
   end
 
   # --- Lanes ---
@@ -43,7 +47,7 @@ platform :ios do
     run_tests(
       project: "EuroTravelTranslate.xcodeproj",
       scheme: "EuroTravelTranslate",
-      device: ios_simulator_device,
+      destination: ios_simulator_destination,
       clean: true
     )
   end
