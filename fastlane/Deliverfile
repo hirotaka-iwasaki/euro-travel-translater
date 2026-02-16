@@ -18,9 +18,6 @@ submission_information({
   content_rights_contains_third_party_content: false,
 })
 
-# Price
-price_tier(0)
-
 # Review info
 app_review_information(
   first_name: "Hirotaka",
