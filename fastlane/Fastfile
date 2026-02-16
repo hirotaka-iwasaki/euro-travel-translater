@@ -22,10 +22,18 @@ platform :ios do
   end
 
   def ios_simulator_device
-    # Prefer iPhone 17 Pro, fall back to latest available iPhone
+    # Parse actual booted/available device names from simctl (iOS 26+ only)
+    require "json"
+    raw = sh("xcrun simctl list devices available -j", log: false)
+    json = JSON.parse(raw)
+    device_names = []
+    json["devices"].each do |runtime, devices|
+      next unless runtime =~ /iOS-?26/ || runtime =~ /SimRuntime\.iOS\.26/
+      devices.each { |d| device_names << d["name"] if d["isAvailable"] }
+    end
+
     preferred = ["iPhone 17 Pro", "iPhone 17", "iPhone 16 Pro", "iPhone 16"]
-    available = sh("xcrun simctl list devices available -j", log: false)
-    preferred.find { |d| available.include?(d) } || "iPhone 16 Pro"
+    preferred.find { |d| device_names.include?(d) } || device_names.find { |n| n.start_with?("iPhone") } || "iPhone 16"
   end
 
   # --- Lanes ---
