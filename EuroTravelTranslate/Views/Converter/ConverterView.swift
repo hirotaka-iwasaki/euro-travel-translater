@@ -1,27 +1,34 @@
 import SwiftUI
+import TipKit
 
 struct ConverterView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var viewModel = ConverterViewModel()
     @State private var expensesVM = ExpensesViewModel()
     @State private var showRecordSheet = false
+    @State private var tipTask: Task<Void, Never>?
+    private let doubleTapTip = DoubleTapClearTip()
 
     var body: some View {
         VStack(spacing: 0) {
             // Amount display (double-tap to clear)
-            Spacer()
             VStack(spacing: 6) {
-                Text(euroDisplay)
-                    .font(.system(size: 52, weight: .semibold, design: .rounded))
-                    .foregroundStyle(Glass.primaryText)
-                    .minimumScaleFactor(0.5)
-                    .lineLimit(1)
+                Spacer()
+                VStack(spacing: 6) {
+                    Text(euroDisplay)
+                        .font(.system(size: 52, weight: .semibold, design: .rounded))
+                        .foregroundStyle(Glass.primaryText)
+                        .minimumScaleFactor(0.5)
+                        .lineLimit(1)
 
-                Text(jpyDisplay)
-                    .font(.system(size: 26, weight: .regular, design: .rounded))
-                    .foregroundStyle(Glass.secondaryText.opacity(0.8))
-                    .minimumScaleFactor(0.5)
-                    .lineLimit(1)
+                    Text(jpyDisplay)
+                        .font(.system(size: 26, weight: .regular, design: .rounded))
+                        .foregroundStyle(Glass.secondaryText.opacity(0.8))
+                        .minimumScaleFactor(0.5)
+                        .lineLimit(1)
+                }
+                .popoverTip(doubleTapTip, arrowEdge: .bottom)
+                Spacer()
             }
             .frame(maxWidth: .infinity)
             .contentShape(Rectangle())
@@ -33,16 +40,18 @@ struct ConverterView: View {
             }
             .contentTransition(.numericText())
             .animation(.spring(response: 0.3, dampingFraction: 0.7), value: viewModel.inputText)
-            Spacer()
-
-            // Numpad
-            NumpadView(
-                onDigit: { viewModel.appendDigit($0) },
-                onDot: { viewModel.appendDot() },
-                onDelete: { viewModel.deleteLast() },
-                onClear: { viewModel.clear() }
-            )
-            .padding(.horizontal, 20)
+            .onChange(of: viewModel.inputText) { _, newValue in
+                guard !newValue.isEmpty else { return }
+                tipTask?.cancel()
+                tipTask = Task {
+                    try? await Task.sleep(for: .seconds(1.5))
+                    guard !Task.isCancelled else { return }
+                    await DoubleTapClearTip.firstInputEvent.donate()
+                    try? await Task.sleep(for: .seconds(5))
+                    guard !Task.isCancelled else { return }
+                    doubleTapTip.invalidate(reason: .actionPerformed)
+                }
+            }
 
             // Record button
             Button {
@@ -61,7 +70,16 @@ struct ConverterView: View {
             .sensoryFeedback(.impact(weight: .light), trigger: showRecordSheet)
             .disabled(viewModel.eurAmount <= 0)
             .padding(.horizontal, 24)
-            .padding(.top, 16)
+            .padding(.bottom, 16)
+
+            // Numpad
+            NumpadView(
+                onDigit: { viewModel.appendDigit($0) },
+                onDot: { viewModel.appendDot() },
+                onDelete: { viewModel.deleteLast() },
+                onClear: { viewModel.clear() }
+            )
+            .padding(.horizontal, 20)
             .padding(.bottom, 80)
         }
         .padding(.horizontal, 8)
