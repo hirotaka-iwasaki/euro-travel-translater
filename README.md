@@ -50,3 +50,95 @@ xcodebuild build -project EuroTravelTranslate.xcodeproj -scheme EuroTravelTransl
 xcodebuild test -project EuroTravelTranslate.xcodeproj -scheme EuroTravelTranslateTests \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
+
+## CI/CD（GitHub Actions + Fastlane）
+
+`main` ブランチへの push をトリガーに、テスト → スクリーンショット撮影 → ビルド → App Store 審査提出 → 自動リリースまでを一気通貫で実行する。
+
+### パイプライン概要
+
+```
+git push main
+  → GitHub Actions (macos-15)
+    → xcodegen generate
+    → fastlane release
+      1. ユニットテスト実行
+      2. UI テストでスクリーンショット撮影 + デバイスフレーム合成
+      3. match でコード署名（App Store Distribution）
+      4. ipa ビルド（ビルド番号は YYYYMMDDHHMM タイムスタンプ）
+      5. App Store へアップロード + 審査提出 + 承認後自動リリース
+```
+
+### 初回セットアップ
+
+以下の手順は一度だけ手動で実施する。
+
+#### 1. リポジトリ作成
+
+```bash
+gh repo create hirotaka-iwasaki/euro-travel-translater --private --source=. --push
+gh repo create hirotaka-iwasaki/ios-certificates --private
+```
+
+#### 2. App Store Connect API キー発行
+
+[App Store Connect](https://appstoreconnect.apple.com) → 統合 → API キー → **App Manager** 権限でキーを作成し、`.p8` ファイルをダウンロード。
+
+#### 3. Fastlane セットアップ
+
+```bash
+bundle install
+bundle exec fastlane match appstore   # 証明書・プロファイルを ios-certificates リポに保存
+```
+
+#### 4. App Store Connect でアプリ登録
+
+Bundle ID `art.minasehiro.EuroTravelTranslate` でアプリを作成。
+
+#### 5. GitHub Secrets 設定
+
+リポジトリの Settings → Secrets and variables → Actions に以下を登録:
+
+| Secret 名 | 内容 |
+|---|---|
+| `MATCH_GIT_URL` | `https://github.com/hirotaka-iwasaki/ios-certificates.git` |
+| `MATCH_PASSWORD` | match の暗号化パスワード |
+| `APP_STORE_CONNECT_API_KEY_ID` | API キー ID |
+| `APP_STORE_CONNECT_API_ISSUER_ID` | Issuer ID |
+| `APP_STORE_CONNECT_API_KEY_CONTENT` | `.p8` ファイルの中身（Base64） |
+| `GIT_AUTH_TOKEN` | `repo` スコープ付き Personal Access Token |
+| `KEYCHAIN_PASSWORD` | CI 用キーチェーンの任意のパスワード |
+
+### Fastlane レーン一覧
+
+```bash
+bundle exec fastlane test          # ユニットテストのみ
+bundle exec fastlane screenshots   # スクショ撮影 + フレーム合成
+bundle exec fastlane beta          # TestFlight へアップロード
+bundle exec fastlane release       # フルリリース（テスト→スクショ→ビルド→App Store 提出）
+```
+
+### App Store メタデータ
+
+`fastlane/metadata/ja/` 配下のテキストファイルで Git 管理。`fastlane release` 時に自動反映される。
+
+```
+fastlane/metadata/
+├── ja/
+│   ├── name.txt              # アプリ名
+│   ├── subtitle.txt          # サブタイトル
+│   ├── description.txt       # 説明文
+│   ├── keywords.txt          # 検索キーワード
+│   ├── promotional_text.txt  # プロモーションテキスト
+│   └── release_notes.txt     # リリースノート
+├── review_information/
+│   └── notes.txt             # 審査メモ
+├── copyright.txt
+└── primary_category.txt
+```
+
+### 注意事項
+
+- **macOS ランナー無料枠**: 月 200 分（Free）/ 300 分（Pro）。1 リリースあたり 30〜45 分
+- **Xcode バージョン**: ランナーに Xcode 26 が未提供の場合、`maxim-lobanov/setup-xcode` で対応するか、セルフホストランナーを検討
+- **ビルド番号**: タイムスタンプ方式（`YYYYMMDDHHMM`）で常に単調増加。App Store Connect へのクエリ不要

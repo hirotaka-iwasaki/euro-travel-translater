@@ -1,6 +1,6 @@
 name: EuroTravelTranslate
 options:
-  bundleIdPrefix: com.minasehiro
+  bundleIdPrefix: art.minasehiro
   deploymentTarget:
     iOS: "26.0"
   xcodeVersion: "26.0"
@@ -28,7 +28,7 @@ targets:
         INFOPLIST_KEY_UISupportedInterfaceOrientations: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortraitUpsideDown"
         GENERATE_INFOPLIST_FILE: true
         INFOPLIST_KEY_CFBundleDisplayName: "Euro Travel Utility"
-        PRODUCT_BUNDLE_IDENTIFIER: com.minasehiro.EuroTravelTranslate
+        PRODUCT_BUNDLE_IDENTIFIER: art.minasehiro.EuroTravelTranslate
         INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: "近くのお店や施設の種類から、支出カテゴリを自動で推測します"
         MARKETING_VERSION: "2.0.0"
         CURRENT_PROJECT_VERSION: 1
@@ -45,3 +45,14 @@ targets:
         GENERATE_INFOPLIST_FILE: true
         TEST_HOST: "$(BUILT_PRODUCTS_DIR)/EuroTravelTranslate.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/EuroTravelTranslate"
         BUNDLE_LOADER: "$(TEST_HOST)"
+
+  EuroTravelTranslateUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: EuroTravelTranslateUITests
+    dependencies:
+      - target: EuroTravelTranslate
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: true

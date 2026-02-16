@@ -25,6 +25,16 @@ Package.resolved
 # CocoaPods (not used but just in case)
 Pods/
 
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Ruby / Bundler
+vendor/bundle
+.bundle
+
 # Misc
 *.swp
 *~

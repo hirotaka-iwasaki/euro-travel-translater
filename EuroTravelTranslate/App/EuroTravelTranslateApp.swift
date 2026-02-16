@@ -5,6 +5,8 @@ import TipKit
 @main
 struct EuroTravelTranslateApp: App {
     init() {
+        let isUITest = ProcessInfo.processInfo.arguments.contains("-UITests")
+        guard !isUITest else { return }
         #if DEBUG
         try? Tips.resetDatastore()
         #endif

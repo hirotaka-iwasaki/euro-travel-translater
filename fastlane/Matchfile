@@ -1,0 +1,5 @@
+git_url(ENV["MATCH_GIT_URL"] || "https://github.com/hirotaka-iwasaki/ios-certificates.git")
+storage_mode("git")
+type("appstore")
+app_identifier("art.minasehiro.EuroTravelTranslate")
+team_id("7N5L874449")

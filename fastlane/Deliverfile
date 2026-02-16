@@ -1,0 +1,37 @@
+app_identifier("art.minasehiro.EuroTravelTranslate")
+team_id("7N5L874449")
+
+# Submission
+submit_for_review(true)
+automatic_release(true)
+force(true)
+
+# Metadata
+metadata_path("./fastlane/metadata")
+screenshots_path("./fastlane/screenshots")
+
+# Compliance
+submission_information({
+  add_id_info_uses_idfa: false,
+  export_compliance_uses_encryption: false,
+  export_compliance_encryption_updated: false,
+  content_rights_contains_third_party_content: false,
+})
+
+# Price
+price_tier(0)
+
+# Review info
+app_review_information(
+  notes: "このアプリはオフラインで動作するユーロ⇄円の換算ツールです。位置情報は支出カテゴリの自動推測のみに使用し、サーバーへの送信は一切行いません。"
+)
+
+# Categories
+primary_category("FINANCE")
+secondary_category("TRAVEL")
+
+# Rating
+app_rating_config_path("./fastlane/metadata/rating_config.json")
+
+# Precheck
+precheck_include_in_app_purchases(false)

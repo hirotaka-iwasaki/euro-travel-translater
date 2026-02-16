@@ -44,6 +44,7 @@ struct NumpadView: View {
                 .frame(maxWidth: .infinity, minHeight: 56)
         }
         .buttonStyle(.glassKey(cornerRadius: Glass.cornerM))
+        .accessibilityIdentifier(key.accessibilityID)
 
         if key == .delete, let onClear {
             base.simultaneousGesture(
@@ -60,6 +61,14 @@ private enum NumpadKey: Hashable {
     case digit(String)
     case dot
     case delete
+
+    var accessibilityID: String {
+        switch self {
+        case .digit(let d): return "numpad_\(d)"
+        case .dot: return "numpad_dot"
+        case .delete: return "numpad_delete"
+        }
+    }
 
     @ViewBuilder
     var label: some View {

@@ -95,6 +95,7 @@ private struct GlassTabBar: View {
                     }
                 }
                 .buttonStyle(.plain)
+                .accessibilityIdentifier("tab_\(index)")
             }
         }
         .padding(.horizontal, 8)
