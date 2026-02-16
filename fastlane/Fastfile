@@ -88,6 +88,18 @@ platform :ios do
       api_key: api
     )
 
+    profile_name = ENV["sigh_art.minasehiro.EuroTravelTranslate_appstore_profile-name"] ||
+                   "match AppStore art.minasehiro.EuroTravelTranslate"
+
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "EuroTravelTranslate.xcodeproj",
+      team_id: "7N5L874449",
+      bundle_identifier: "art.minasehiro.EuroTravelTranslate",
+      profile_name: profile_name,
+      code_sign_identity: "Apple Distribution"
+    )
+
     increment_build_number(
       build_number: build_number,
       xcodeproj: "EuroTravelTranslate.xcodeproj"
@@ -98,7 +110,12 @@ platform :ios do
       scheme: "EuroTravelTranslate",
       export_method: "app-store",
       output_directory: "./build",
-      output_name: "EuroTravelTranslate.ipa"
+      output_name: "EuroTravelTranslate.ipa",
+      export_options: {
+        provisioningProfiles: {
+          "art.minasehiro.EuroTravelTranslate" => profile_name
+        }
+      }
     )
 
     upload_to_testflight(
@@ -125,6 +142,18 @@ platform :ios do
       api_key: api
     )
 
+    profile_name = ENV["sigh_art.minasehiro.EuroTravelTranslate_appstore_profile-name"] ||
+                   "match AppStore art.minasehiro.EuroTravelTranslate"
+
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "EuroTravelTranslate.xcodeproj",
+      team_id: "7N5L874449",
+      bundle_identifier: "art.minasehiro.EuroTravelTranslate",
+      profile_name: profile_name,
+      code_sign_identity: "Apple Distribution"
+    )
+
     # 4. Set build number
     increment_build_number(
       build_number: build_number,
@@ -137,7 +166,12 @@ platform :ios do
       scheme: "EuroTravelTranslate",
       export_method: "app-store",
       output_directory: "./build",
-      output_name: "EuroTravelTranslate.ipa"
+      output_name: "EuroTravelTranslate.ipa",
+      export_options: {
+        provisioningProfiles: {
+          "art.minasehiro.EuroTravelTranslate" => profile_name
+        }
+      }
     )
 
     # 6. Upload to App Store with review submission
