@@ -34,10 +34,7 @@ struct POIResolver: POIResolverProtocol {
         let results: [(item: MKMapItem, category: ExpenseCategory, distance: CLLocationDistance)] = response.mapItems.compactMap { item in
             guard let poiCategory = item.pointOfInterestCategory,
                   let mapped = Self.mapCategory(poiCategory) else { return nil }
-            let dist = location.distance(from: CLLocation(
-                latitude: item.placemark.coordinate.latitude,
-                longitude: item.placemark.coordinate.longitude
-            ))
+            let dist = location.distance(from: item.location)
             return (item, mapped, dist)
         }
 
