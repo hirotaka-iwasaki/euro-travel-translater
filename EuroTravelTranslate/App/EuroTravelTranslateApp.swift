@@ -8,10 +8,8 @@ struct EuroTravelTranslateApp: App {
             ContentView()
         }
         .modelContainer(for: [
-            TranscriptItem.self,
-            TranslationItem.self,
-            CameraCaptureItem.self,
             SettingsState.self,
+            ExpenseItem.self,
         ])
     }
 }

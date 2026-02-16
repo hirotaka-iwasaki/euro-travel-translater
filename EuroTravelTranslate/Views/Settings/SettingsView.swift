@@ -3,60 +3,104 @@ import SwiftUI
 struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var viewModel = SettingsViewModel()
+    @State private var showDeleteConfirm = false
+    @State private var showRateInput = false
 
     var body: some View {
         List {
-            Section("Language") {
-                NavigationLink {
-                    LanguagePickerView(viewModel: viewModel)
+            Section("為替レート") {
+                Button {
+                    showRateInput = true
                 } label: {
                     HStack {
-                        Text("Languages")
+                        Text("€1 = ¥")
+                            .foregroundStyle(Glass.primaryText)
+                        Text(viewModel.rateText)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(Glass.primaryText)
                         Spacer()
-                        Text(viewModel.selectedInputLang.displayName)
-                            .foregroundStyle(.secondary)
+                        Image(systemName: "pencil")
+                            .foregroundStyle(Glass.secondaryText)
                     }
                 }
-            }
 
-            Section("Reply Style") {
-                Picker("Default Style", selection: $viewModel.politeStyle) {
-                    Text("Polite").tag(true)
-                    Text("Casual").tag(false)
-                }
-                .pickerStyle(.segmented)
-                .onChange(of: viewModel.politeStyle) {
-                    viewModel.save()
-                }
+                let preview = Int((12.5 * viewModel.eurToJpyRate).rounded())
+                Text("€12.50 → ¥\(preview)")
+                    .font(.caption)
+                    .foregroundStyle(Glass.secondaryText)
             }
+            .listRowBackground(Color.white.opacity(0.45))
 
-            Section("Text-to-Speech") {
-                Toggle("TTS Enabled", isOn: $viewModel.ttsEnabled)
-                    .onChange(of: viewModel.ttsEnabled) {
+            Section("旅行期間") {
+                Toggle("旅行開始日を設定", isOn: Binding(
+                    get: { viewModel.tripStartDate != nil },
+                    set: { enabled in
+                        viewModel.tripStartDate = enabled ? Date() : nil
                         viewModel.save()
                     }
-            }
+                ))
 
-            Section("Offline") {
-                NavigationLink {
-                    OfflineCheckView(viewModel: viewModel)
+                if let startDate = viewModel.tripStartDate {
+                    DatePicker(
+                        "開始日",
+                        selection: Binding(
+                            get: { startDate },
+                            set: {
+                                viewModel.tripStartDate = $0
+                                viewModel.save()
+                            }
+                        ),
+                        displayedComponents: .date
+                    )
+                }
+            }
+            .listRowBackground(Color.white.opacity(0.45))
+
+            Section("データ") {
+                Button(role: .destructive) {
+                    showDeleteConfirm = true
                 } label: {
-                    Text("Offline Availability Check")
+                    Label("全支出データを削除", systemImage: "trash")
                 }
             }
+            .listRowBackground(Color.white.opacity(0.45))
 
-            Section("About") {
+            Section("アプリ情報") {
                 HStack {
-                    Text("Version")
+                    Text("バージョン")
+                        .foregroundStyle(Glass.primaryText)
                     Spacer()
-                    Text("1.0.0")
-                        .foregroundStyle(.secondary)
+                    Text("2.0.0")
+                        .foregroundStyle(Glass.secondaryText)
                 }
             }
+            .listRowBackground(Color.white.opacity(0.45))
         }
-        .navigationTitle("Settings")
+        .scrollContentBackground(.hidden)
+        .appBackground()
+        .navigationTitle("設定")
         .onAppear {
             viewModel.setup(modelContext: modelContext)
+        }
+        .alert("為替レート", isPresented: $showRateInput) {
+            TextField("レート", text: $viewModel.rateText)
+                .keyboardType(.decimalPad)
+            Button("保存") {
+                viewModel.commitRate()
+            }
+            Button("キャンセル", role: .cancel) {
+                viewModel.revertRateText()
+            }
+        } message: {
+            Text("€1あたりの円レートを入力")
+        }
+        .alert("確認", isPresented: $showDeleteConfirm) {
+            Button("削除", role: .destructive) {
+                viewModel.deleteAllExpenses()
+            }
+            Button("キャンセル", role: .cancel) {}
+        } message: {
+            Text("全ての支出データを削除しますか？この操作は取り消せません。")
         }
     }
 }

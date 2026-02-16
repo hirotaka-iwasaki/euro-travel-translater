@@ -3,23 +3,14 @@ import SwiftData
 
 @Model
 final class SettingsState {
-    var selectedInputLang: String
-    var enabledLangs: [String]
-    var politeStyle: Bool
-    var ttsEnabled: Bool
-    var offlineReadyCheckedAt: Date?
+    var eurToJpyRate: Double = 160.0
+    var tripStartDate: Date?
 
     init(
-        selectedInputLang: String = "auto",
-        enabledLangs: [String] = ["en", "fr", "de", "es", "it"],
-        politeStyle: Bool = true,
-        ttsEnabled: Bool = true,
-        offlineReadyCheckedAt: Date? = nil
+        eurToJpyRate: Double = 160.0,
+        tripStartDate: Date? = nil
     ) {
-        self.selectedInputLang = selectedInputLang
-        self.enabledLangs = enabledLangs
-        self.politeStyle = politeStyle
-        self.ttsEnabled = ttsEnabled
-        self.offlineReadyCheckedAt = offlineReadyCheckedAt
+        self.eurToJpyRate = eurToJpyRate
+        self.tripStartDate = tripStartDate
     }
 }

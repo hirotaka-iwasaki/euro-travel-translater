@@ -1,148 +1,104 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var translationBridge = TranslationBridgeController()
-    @State private var permissionManager = PermissionManager()
-    @State private var showPermissionSheet = false
+    @State private var selectedTab = 0
+
+    init() {
+        // Hide the default tab bar — we use a custom glass one
+        UITabBar.appearance().isHidden = true
+
+        let navAppearance = UINavigationBarAppearance()
+        navAppearance.configureWithTransparentBackground()
+        navAppearance.shadowColor = .clear
+        let primaryUIColor = UIColor(Glass.primaryText)
+        navAppearance.titleTextAttributes = [.foregroundColor: primaryUIColor]
+        navAppearance.largeTitleTextAttributes = [.foregroundColor: primaryUIColor]
+        UINavigationBar.appearance().standardAppearance = navAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = navAppearance
+        UINavigationBar.appearance().compactAppearance = navAppearance
+    }
 
     var body: some View {
-        ZStack {
-            TabView {
-                Tab("Voice", systemImage: "mic.fill") {
-                    NavigationStack {
-                        VoiceView()
-                    }
+        ZStack(alignment: .bottom) {
+            TabView(selection: $selectedTab) {
+                NavigationStack {
+                    ConverterView()
                 }
+                .tag(0)
 
-                Tab("Camera", systemImage: "camera.fill") {
-                    NavigationStack {
-                        CameraView()
-                    }
+                NavigationStack {
+                    ExpensesView()
                 }
+                .tag(1)
 
-                Tab("Phrases", systemImage: "text.book.closed.fill") {
-                    NavigationStack {
-                        PhrasesView()
-                    }
+                NavigationStack {
+                    SettingsView()
                 }
-
-                Tab("Settings", systemImage: "gearshape.fill") {
-                    NavigationStack {
-                        SettingsView()
-                    }
-                }
+                .tag(2)
             }
 
-            TranslationBridgeView(controller: translationBridge)
+            // Custom glass tab bar
+            GlassTabBar(selectedTab: $selectedTab)
+                .padding(.horizontal, 24)
+                .padding(.bottom, 4)
         }
-        .environment(translationBridge)
-        .environment(permissionManager)
-        .onAppear {
-            if permissionManager.needsAnyPermission {
-                showPermissionSheet = true
-            }
-        }
-        .sheet(isPresented: $showPermissionSheet) {
-            PermissionSheetView(permissionManager: permissionManager)
-        }
+        .preferredColorScheme(.light)
     }
 }
 
-struct PermissionSheetView: View {
-    var permissionManager: PermissionManager
-    @Environment(\.dismiss) private var dismiss
+// MARK: - Custom Glass Tab Bar
+
+private struct GlassTabBar: View {
+    @Binding var selectedTab: Int
+    @Namespace private var tabNamespace
+
+    private let items: [(icon: String, label: String)] = [
+        ("yensign", "変換"),
+        ("list.bullet", "支出"),
+        ("gearshape", "設定"),
+    ]
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 24) {
-                Image(systemName: "globe")
-                    .font(.system(size: 60))
-                    .foregroundStyle(Color.accentColor)
-
-                Text("Welcome to Euro Travel Translate")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.center)
-
-                Text("This app needs a few permissions to help you translate during your trip.")
-                    .font(.body)
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
-
-                VStack(spacing: 16) {
-                    permissionRow(
-                        icon: "mic.fill",
-                        title: "Microphone",
-                        description: "Listen to conversations",
-                        granted: permissionManager.microphoneGranted
-                    )
-
-                    permissionRow(
-                        icon: "waveform",
-                        title: "Speech Recognition",
-                        description: "Convert speech to text",
-                        granted: permissionManager.speechStatus == .authorized
-                    )
-
-                    permissionRow(
-                        icon: "camera.fill",
-                        title: "Camera",
-                        description: "Scan signs and menus",
-                        granted: permissionManager.cameraStatus == .authorized
-                    )
-                }
-                .padding(.horizontal)
-
-                Spacer()
-
-                if permissionManager.allGranted {
-                    Button("Get Started") {
-                        dismiss()
+        HStack(spacing: 0) {
+            ForEach(items.indices, id: \.self) { index in
+                Button {
+                    withAnimation(Glass.selectAnimation) {
+                        selectedTab = index
                     }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                } else {
-                    Button("Grant Permissions") {
-                        Task {
-                            await permissionManager.requestAll()
+                } label: {
+                    VStack(spacing: 4) {
+                        Image(systemName: items[index].icon)
+                            .font(.system(size: 20, weight: .medium))
+                        Text(items[index].label)
+                            .font(.system(size: 11, weight: .medium, design: .rounded))
+                    }
+                    .foregroundStyle(selectedTab == index ? Glass.accent : Glass.secondaryText)
+                    .frame(maxWidth: .infinity, minHeight: 52)
+                    .background {
+                        if selectedTab == index {
+                            RoundedRectangle(cornerRadius: Glass.cornerM, style: .continuous)
+                                .fill(.ultraThinMaterial)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: Glass.cornerM, style: .continuous)
+                                        .fill(Glass.accentSubtle)
+                                }
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: Glass.cornerM, style: .continuous)
+                                        .strokeBorder(
+                                            Glass.accent.opacity(0.2),
+                                            lineWidth: 0.5
+                                        )
+                                }
+                                .padding(4)
+                                .matchedGeometryEffect(id: "tabHighlight", in: tabNamespace)
                         }
                     }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
                 }
-            }
-            .padding(.vertical, 32)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Skip") { dismiss() }
-                }
+                .buttonStyle(.plain)
             }
         }
-    }
-
-    private func permissionRow(icon: String, title: String, description: String, granted: Bool) -> some View {
-        HStack(spacing: 12) {
-            Image(systemName: icon)
-                .font(.title3)
-                .frame(width: 32)
-                .foregroundStyle(Color.accentColor)
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                Text(description)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-
-            Spacer()
-
-            Image(systemName: granted ? "checkmark.circle.fill" : "circle")
-                .foregroundStyle(granted ? .green : .secondary)
-        }
-        .padding(.vertical, 4)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 6)
+        .glassSurface(cornerRadius: Glass.cornerPill, shadowIntensity: 0.8)
     }
 }

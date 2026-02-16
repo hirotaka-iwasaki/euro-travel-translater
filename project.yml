@@ -2,13 +2,15 @@ name: EuroTravelTranslate
 options:
   bundleIdPrefix: com.minasehiro
   deploymentTarget:
-    iOS: "18.0"
-  xcodeVersion: "16.0"
+    iOS: "26.0"
+  xcodeVersion: "26.0"
 
 settings:
   base:
     SWIFT_VERSION: "6.0"
-    IPHONEOS_DEPLOYMENT_TARGET: "18.0"
+    IPHONEOS_DEPLOYMENT_TARGET: "26.0"
+    CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: "7N5L874449"
 
 targets:
   EuroTravelTranslate:
@@ -21,15 +23,14 @@ targets:
         buildPhase: resources
     settings:
       base:
-        INFOPLIST_KEY_NSCameraUsageDescription: "カメラで看板やメニューの文字を読み取り、翻訳します"
-        INFOPLIST_KEY_NSMicrophoneUsageDescription: "音声を聞き取り、リアルタイムで翻訳します"
-        INFOPLIST_KEY_NSSpeechRecognitionUsageDescription: "音声をテキストに変換して翻訳します"
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: true
         INFOPLIST_KEY_UILaunchScreen_Generation: true
         INFOPLIST_KEY_UISupportedInterfaceOrientations: "UIInterfaceOrientationPortrait"
         GENERATE_INFOPLIST_FILE: true
+        INFOPLIST_KEY_CFBundleDisplayName: "Euro Travel Utility"
         PRODUCT_BUNDLE_IDENTIFIER: com.minasehiro.EuroTravelTranslate
-        MARKETING_VERSION: "1.0.0"
+        INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: "近くのお店や施設の種類から、支出カテゴリを自動で推測します"
+        MARKETING_VERSION: "2.0.0"
         CURRENT_PROJECT_VERSION: 1
 
   EuroTravelTranslateTests:
