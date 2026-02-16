@@ -23,6 +23,10 @@ price_tier(0)
 
 # Review info
 app_review_information(
+  first_name: "Hirotaka",
+  last_name: "Origuchi",
+  phone_number: "+81 80-9153-3100",
+  email_address: "flumver@me.com",
   notes: "このアプリはオフラインで動作するユーロ/円の換算ツールです。位置情報は支出カテゴリの自動推測のみに使用し、サーバーへの送信は一切行いません。"
 )
 
