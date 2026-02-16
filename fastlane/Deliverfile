@@ -36,3 +36,13 @@ app_rating_config_path("./fastlane/metadata/rating_config.json")
 
 # Precheck
 precheck_include_in_app_purchases(false)
+
+# App Privacy (nutrition labels)
+app_privacy_details({
+  "DATA_NOT_LINKED_TO_YOU" => [
+    {
+      "data_type" => "DATA_COARSE_LOCATION",
+      "purposes" => ["APP_FUNCTIONALITY"]
+    }
+  ]
+})
