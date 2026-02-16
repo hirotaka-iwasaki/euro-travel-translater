@@ -93,7 +93,10 @@ bundle exec fastlane match appstore   # 証明書・プロファイルを ios-ce
 
 #### 4. App Store Connect でアプリ登録
 
-Bundle ID `art.minasehiro.EuroTravelTranslate` でアプリを作成。
+Bundle ID `art.minasehiro.EuroTravelTranslate` でアプリを作成し、以下を手動設定する（API 非対応のため Fastlane では自動化不可）:
+
+- **価格**: 「価格および配信状況」→ 無料（¥0）に設定
+- **App Privacy**: 「App のプライバシー」→ データ収集の回答を公開（本アプリは「大まかな位置情報」を「App の機能」目的で使用、ユーザーに紐付けない）
 
 #### 5. GitHub Secrets 設定
 
