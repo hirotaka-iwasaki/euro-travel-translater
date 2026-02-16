@@ -12,5 +12,12 @@
   "GRAPHIC_SEXUAL_CONTENT_NUDITY": 0,
   "UNRESTRICTED_WEB_ACCESS": 0,
   "GAMBLING_CONTESTS": 0,
-  "healthOrWellnessTopics": 0
+  "healthOrWellnessTopics": 0,
+  "userGeneratedContent": 0,
+  "lootBox": 0,
+  "parentalControls": 0,
+  "gunsOrOtherWeapons": 0,
+  "ageAssurance": 0,
+  "messagingAndChat": 0,
+  "advertising": 0
 }
