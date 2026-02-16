@@ -22,21 +22,37 @@ platform :ios do
   end
 
   def ios_simulator_destination
-    # Find an actual available iPhone UUID from xcodebuild destinations
-    output = sh("xcodebuild -scheme EuroTravelTranslate -project EuroTravelTranslate.xcodeproj -showdestinations 2>&1", log: false)
-    # Match iPhone simulator lines: { platform:iOS Simulator, ..., id:UUID, ..., name:iPhone ... }
+    # Parse `simctl list` text output to find an iPhone under iOS 26+ runtime
+    output = sh("xcrun simctl list devices available", log: false)
+    in_ios26 = false
     preferred = ["iPhone 17 Pro", "iPhone 17", "iPhone 16 Pro", "iPhone 16"]
-    preferred.each do |name|
-      if output =~ /platform:iOS Simulator.*id:([A-F0-9-]+).*name:#{Regexp.escape(name)}/
-        UI.message("Using simulator: #{name} (#{$1})")
-        return "platform=iOS Simulator,id=#{$1}"
+    found = {} # name => uuid
+
+    output.each_line do |line|
+      if line =~ /-- iOS ([\d.]+)/
+        in_ios26 = ($1.split(".").first.to_i >= 26)
+      elsif line =~ /-- /
+        in_ios26 = false
+      elsif in_ios26 && line =~ /(iPhone[^(]+)\(([A-F0-9-]+)\)/i
+        name = $1.strip
+        uuid = $2
+        found[name] ||= uuid
       end
     end
-    # Fallback: first iPhone simulator found
-    if output =~ /platform:iOS Simulator.*id:([A-F0-9-]+).*name:(iPhone[^}]+)/
-      UI.message("Fallback simulator: #{$2.strip} (#{$1})")
-      return "platform=iOS Simulator,id=#{$1}"
+
+    preferred.each do |name|
+      if found[name]
+        UI.message("Using simulator: #{name} (#{found[name]})")
+        return "platform=iOS Simulator,id=#{found[name]}"
+      end
     end
+
+    # Fallback: first iPhone found in iOS 26+
+    if (first = found.first)
+      UI.message("Fallback simulator: #{first[0]} (#{first[1]})")
+      return "platform=iOS Simulator,id=#{first[1]}"
+    end
+
     "platform=iOS Simulator,name=iPhone 16"
   end
 
