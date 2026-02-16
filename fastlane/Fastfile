@@ -21,14 +21,21 @@ platform :ios do
     Time.now.strftime("%Y%m%d%H%M")
   end
 
+  def ios_simulator_device
+    # Prefer iPhone 17 Pro, fall back to latest available iPhone
+    preferred = ["iPhone 17 Pro", "iPhone 17", "iPhone 16 Pro", "iPhone 16"]
+    available = sh("xcrun simctl list devices available -j", log: false)
+    preferred.find { |d| available.include?(d) } || "iPhone 16 Pro"
+  end
+
   # --- Lanes ---
 
   desc "Run unit tests"
   lane :test do
     run_tests(
       project: "EuroTravelTranslate.xcodeproj",
-      scheme: "EuroTravelTranslateTests",
-      device: "iPhone 17 Pro",
+      scheme: "EuroTravelTranslate",
+      device: ios_simulator_device,
       clean: true
     )
   end
@@ -37,7 +44,7 @@ platform :ios do
   lane :screenshots do
     capture_screenshots(
       project: "EuroTravelTranslate.xcodeproj",
-      scheme: "EuroTravelTranslateUITests"
+      scheme: "EuroTravelTranslate"
     )
     frame_screenshots(white: true)
   end

@@ -56,3 +56,15 @@ targets:
     settings:
       base:
         GENERATE_INFOPLIST_FILE: true
+
+schemes:
+  EuroTravelTranslate:
+    build:
+      targets:
+        EuroTravelTranslate: all
+        EuroTravelTranslateTests: [test]
+        EuroTravelTranslateUITests: [test]
+    test:
+      targets:
+        - EuroTravelTranslateTests
+        - EuroTravelTranslateUITests

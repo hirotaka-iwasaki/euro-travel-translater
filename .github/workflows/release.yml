@@ -35,6 +35,15 @@ jobs:
       - name: Install XcodeGen
         run: brew install xcodegen
 
+      - name: Ensure iOS simulator runtime
+        run: |
+          # Download latest iOS simulator runtime if no iPhone 17 Pro is available
+          if ! xcrun simctl list devices available | grep -q "iPhone 17 Pro"; then
+            echo "iPhone 17 Pro not found, downloading latest iOS runtime..."
+            xcodebuild -downloadPlatform iOS
+            xcrun simctl list devices available | grep iPhone | head -5
+          fi
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
