@@ -20,12 +20,14 @@ jobs:
       APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
       APP_STORE_CONNECT_API_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_ISSUER_ID }}
       APP_STORE_CONNECT_API_KEY_CONTENT: ${{ secrets.APP_STORE_CONNECT_API_KEY_CONTENT }}
-      MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.GIT_AUTH_TOKEN }}
       FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 60
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Encode match git auth
+        run: echo "MATCH_GIT_BASIC_AUTHORIZATION=$(echo -n 'hirotaka-iwasaki:${{ secrets.GIT_AUTH_TOKEN }}' | base64)" >> $GITHUB_ENV
 
       - name: Select Xcode
         uses: maxim-lobanov/setup-xcode@v1
