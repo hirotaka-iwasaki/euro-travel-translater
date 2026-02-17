@@ -79,11 +79,17 @@ platform :ios do
 
     # Generate 6.5" (1242x2688) screenshots from 6.7" for App Store requirement.
     # iOS 26 has no 6.5" simulator, so we resize from the framed 6.7" captures.
-    # __dir__ = fastlane/ dir, so "screenshots" resolves to fastlane/screenshots/
-    screenshots_abs = File.join(__dir__, "screenshots")
+    fl_dir = FastlaneCore::FastlaneFolder.path
+    screenshots_abs = File.expand_path("screenshots", fl_dir)
+    UI.message("fastlane dir: #{fl_dir}")
     UI.message("Looking for 6.7\" screenshots in: #{screenshots_abs}")
-    pngs = Dir.glob("#{screenshots_abs}/**/*iPhone 17 Pro Max*.png")
-    UI.message("Found #{pngs.count} files matching iPhone 17 Pro Max")
+    UI.message("Dir exists: #{Dir.exist?(screenshots_abs)}")
+    all_pngs = Dir.glob("#{screenshots_abs}/**/*.png")
+    UI.message("Total PNGs in screenshots dir: #{all_pngs.count}")
+    all_pngs.first(5).each { |f| UI.message("  sample: #{File.basename(f)}") }
+
+    pngs = all_pngs.select { |f| File.basename(f).include?("iPhone 17 Pro Max") }
+    UI.message("Matched iPhone 17 Pro Max: #{pngs.count}")
     pngs.each do |path|
       UI.message("  Source: #{path}")
       basename = File.basename(path).gsub("iPhone 17 Pro Max", "iPhone_65")
