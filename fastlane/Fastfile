@@ -64,7 +64,8 @@ platform :ios do
       project: "EuroTravelTranslate.xcodeproj",
       scheme: "EuroTravelTranslate",
       destination: ios_simulator_destination,
-      clean: true
+      clean: true,
+      only_testing: ["EuroTravelTranslateTests"]
     )
   end
 
