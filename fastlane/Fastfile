@@ -78,10 +78,11 @@ platform :ios do
 
     # Generate 6.5" (1242x2688) screenshots from 6.7" for App Store requirement.
     # iOS 26 has no 6.5" simulator, so we resize from the framed 6.7" captures.
-    Dir.glob("./fastlane/screenshots/**/iPhone 17 Pro Max*.png").each do |path|
-      dir = File.dirname(path)
+    # Use File.expand_path to get absolute paths — sh() runs from fastlane/ dir.
+    screenshots_abs = File.expand_path("fastlane/screenshots")
+    Dir.glob("#{screenshots_abs}/**/iPhone 17 Pro Max*.png").each do |path|
       basename = File.basename(path).gsub("iPhone 17 Pro Max", "iPhone_65")
-      target = File.join(dir, basename)
+      target = File.join(File.dirname(path), basename)
       FileUtils.cp(path, target)
       sh("sips", "-z", "2688", "1242", target)
       UI.message("Generated 6.5\" screenshot: #{target}")
