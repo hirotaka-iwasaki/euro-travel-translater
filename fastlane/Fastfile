@@ -72,8 +72,7 @@ platform :ios do
   desc "Capture and frame screenshots"
   lane :screenshots do
     capture_screenshots(
-      project: "EuroTravelTranslate.xcodeproj",
-      scheme: "EuroTravelTranslate"
+      project: "EuroTravelTranslate.xcodeproj"
     )
     frame_screenshots(white: true)
 

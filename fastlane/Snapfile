@@ -5,7 +5,7 @@ devices([
 
 languages(["ja"])
 
-scheme("EuroTravelTranslateUITests")
+scheme("EuroTravelTranslate")
 output_directory("./fastlane/screenshots")
 
 clear_previous_screenshots(true)

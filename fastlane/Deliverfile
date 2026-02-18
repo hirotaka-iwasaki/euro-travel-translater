@@ -1,11 +1,6 @@
 app_identifier("art.minasehiro.EuroTravelTranslate")
 team_id("7N5L874449")
 
-# Submission
-submit_for_review(true)
-automatic_release(true)
-force(true)
-
 # Metadata
 metadata_path("./fastlane/metadata")
 screenshots_path("./fastlane/screenshots")
