@@ -26,10 +26,6 @@ enum Snapshot {
     static var waitForAnimations = true
     static var cacheDirectory: URL?
 
-    static var screenshotsDirectory: URL? {
-        cacheDirectory?.appendingPathComponent("screenshots", isDirectory: true)
-    }
-
     static func setupSnapshot(_ app: XCUIApplication, waitForAnimations: Bool = true) {
         Snapshot.app = app
         Snapshot.waitForAnimations = waitForAnimations
@@ -60,23 +56,12 @@ enum Snapshot {
 
         let screenshot = app.windows.firstMatch.screenshot()
 
-        guard var screenshotsDir = screenshotsDirectory else { return }
-
-        do {
-            try FileManager.default.createDirectory(
-                at: screenshotsDir,
-                withIntermediateDirectories: true
-            )
-        } catch {
-            NSLog("Snapshot: Error creating screenshots directory: \(error)")
-            return
-        }
-
-        screenshotsDir.appendPathComponent("\(name).png")
-        do {
-            try screenshot.pngRepresentation.write(to: screenshotsDir)
-        } catch {
-            NSLog("Snapshot: Error writing screenshot: \(error)")
+        // Attach to xcresult so capture_screenshots can extract it
+        let attachment = XCTAttachment(screenshot: screenshot)
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        XCTContext.runActivity(named: "Snapshot: \(name)") { activity in
+            activity.add(attachment)
         }
     }
 
