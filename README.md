@@ -140,6 +140,29 @@ fastlane/metadata/
 └── primary_category.txt
 ```
 
+### リリース手順
+
+`main` に push するだけで自動リリースされるが、以下は毎回手動で行う:
+
+1. **`project.yml`** の `MARKETING_VERSION` をバージョンアップ（例: `2.0.0` → `2.1.0`）
+2. **`fastlane/metadata/ja/release_notes.txt`** を今回のリリース内容に書き換え
+3. `git push origin main` → CI が自動でテスト → ビルド → 審査提出
+
+```bash
+# 例: バージョンを 2.1.0 にして push
+# 1. project.yml の MARKETING_VERSION を編集
+# 2. release_notes.txt を更新
+git add -A && git commit -m "v2.1.0" && git push origin main
+```
+
+### 定期メンテナンス
+
+| 項目 | 頻度 | 対応 |
+|---|---|---|
+| **証明書・プロファイル更新** | 年1回（失効時） | ローカルで `bundle exec fastlane match appstore` を再実行 |
+| **GitHub PAT 更新** | 有効期限切れ時 | GitHub → Settings → Developer settings → PAT を再発行し、`GIT_AUTH_TOKEN` Secret を更新 |
+| **App Store Connect API キー** | 無期限（削除時のみ） | 再発行して関連 Secrets を更新 |
+
 ### 注意事項
 
 - **macOS ランナー無料枠**: 月 200 分（Free）/ 300 分（Pro）。1 リリースあたり 30〜45 分

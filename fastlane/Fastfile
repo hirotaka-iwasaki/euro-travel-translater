@@ -77,25 +77,16 @@ platform :ios do
     frame_screenshots(white: true)
 
     # Generate 6.5" (1242x2688) screenshots from 6.7" for App Store requirement.
-    # iOS 26 has no 6.5" simulator, so we resize from the framed 6.7" captures.
-    fl_dir = FastlaneCore::FastlaneFolder.path
-    screenshots_abs = File.expand_path("screenshots", fl_dir)
-    UI.message("fastlane dir: #{fl_dir}")
-    UI.message("Looking for 6.7\" screenshots in: #{screenshots_abs}")
-    UI.message("Dir exists: #{Dir.exist?(screenshots_abs)}")
-    all_pngs = Dir.glob("#{screenshots_abs}/**/*.png")
-    UI.message("Total PNGs in screenshots dir: #{all_pngs.count}")
-    all_pngs.first(5).each { |f| UI.message("  sample: #{File.basename(f)}") }
-
-    pngs = all_pngs.select { |f| File.basename(f).include?("iPhone 17 Pro Max") }
-    UI.message("Matched iPhone 17 Pro Max: #{pngs.count}")
+    # iOS 26 has no 6.5" simulator, so we resize from the 6.7" captures.
+    screenshots_abs = File.expand_path("screenshots", FastlaneCore::FastlaneFolder.path)
+    pngs = Dir.glob("#{screenshots_abs}/**/*.png")
+              .select { |f| File.basename(f).include?("iPhone 17 Pro Max") }
+    UI.message("Generating 6.5\" screenshots from #{pngs.count} × 6.7\" sources")
     pngs.each do |path|
-      UI.message("  Source: #{path}")
       basename = File.basename(path).gsub("iPhone 17 Pro Max", "iPhone_65")
       target = File.join(File.dirname(path), basename)
       FileUtils.cp(path, target)
       sh("sips", "-z", "2688", "1242", target)
-      UI.message("  Generated 6.5\": #{target}")
     end
   end
 
@@ -200,6 +191,7 @@ platform :ios do
     upload_to_app_store(
       api_key: api,
       skip_screenshots: false,
+      overwrite_screenshots: true,
       skip_metadata: false,
       force: true,
       submit_for_review: true,
