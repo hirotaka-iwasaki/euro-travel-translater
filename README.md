@@ -162,6 +162,7 @@ git add -A && git commit -m "v2.1.0" && git push origin main
 | **証明書・プロファイル更新** | 年1回（失効時） | ローカルで `bundle exec fastlane match appstore` を再実行 |
 | **GitHub PAT 更新** | 有効期限切れ時 | GitHub → Settings → Developer settings → PAT を再発行し、`GIT_AUTH_TOKEN` Secret を更新 |
 | **App Store Connect API キー** | 無期限（削除時のみ） | 再発行して関連 Secrets を更新 |
+| **スクリーンショット更新** | UI 変更時 | ASC でスクショを手動削除してから push（通常リリースでは既存スクショが再利用される） |
 
 ### 注意事項
 
