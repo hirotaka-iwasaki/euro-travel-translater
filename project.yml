@@ -1,6 +1,7 @@
 name: EuroTravelTranslate
 options:
   bundleIdPrefix: art.minasehiro
+  developmentLanguage: ja
   deploymentTarget:
     iOS: "26.0"
   xcodeVersion: "26.0"
